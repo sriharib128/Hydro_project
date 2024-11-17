@@ -8,7 +8,8 @@ from PIL import Image
 import pandas as pd
 from discharge_analysis import perform_discharge_analysis
 import ml_module  # Import the ml_module
-import dqt
+# import dqt_module
+from dqt_module import process_reservoir_data
 
 app = Flask(__name__)
 CORS(app)
@@ -60,9 +61,9 @@ def dummy_ml_analysis(files):
     return results
     
 
-def dummy_dqt_analysis(file):
-    data_file  = files.get('inflow_data')
-    results = process_reservoir_data(data_file)
+def dummy_dqt_analysis(files):
+    data_file  = files.get('file')
+    results = process_reservoir_data(data_file, inflow_unit='m3/day', desired_T=5)
     return results
 
 @app.route('/empirical', methods=['POST'])
@@ -76,9 +77,9 @@ def ml():
     return jsonify(dummy_ml_analysis(files))
 
 @app.route('/dqt', methods=['POST'])
-def dqt():
-    file = request.files['file1']
-    return jsonify(dummy_dqt_analysis(file))
+def dqt_module():
+    files = request.files
+    return jsonify(dummy_dqt_analysis(files))
 
 if __name__ == '__main__':
     app.run(debug=True)

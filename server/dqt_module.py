@@ -104,7 +104,6 @@ def calculate_7Q5(df, desired_T=5):
     return dqt_m3_s, flow_moving_avg_plot, frequency_curve_plot
 
 def process_reservoir_data(csv_file_path, inflow_unit='m3/day', desired_T=5):
-
     # Read CSV
     df = pd.read_csv(csv_file_path)
 
