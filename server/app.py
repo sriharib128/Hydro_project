@@ -8,6 +8,7 @@ from PIL import Image
 import pandas as pd
 from discharge_analysis import perform_discharge_analysis
 import ml_module  # Import the ml_module
+import dqt
 
 app = Flask(__name__)
 CORS(app)
@@ -60,20 +61,9 @@ def dummy_ml_analysis(files):
     
 
 def dummy_dqt_analysis(file):
-    plots = []
-    
-    plt.figure(figsize=(10, 6))
-    plt.plot(np.random.rand(100))
-    plt.title('Water Quality Parameters')
-    plots.append(encode_plot_to_base64())
-    
-    return {
-        'plots': plots,
-        'values': {
-            'water_quality_index': f"{np.random.rand() * 100:.1f}",
-            'quality_category': 'Good'
-        }
-    }
+    data_file  = files.get('inflow_data')
+    results = process_reservoir_data(data_file)
+    return results
 
 @app.route('/empirical', methods=['POST'])
 def empirical():
